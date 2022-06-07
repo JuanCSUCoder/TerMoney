@@ -1,7 +1,5 @@
 mod question;
 
-use std::io::stdin;
-
 use crate::question::Question;
 
 fn main() {
