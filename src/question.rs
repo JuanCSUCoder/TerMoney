@@ -3,7 +3,8 @@ use std::io::stdin;
 /// It is a class that handle validation of questions in the terminal
 pub struct Question {
 	message: String,
-	invalids: Vec<String>
+	invalids: Vec<String>,
+	invalids_contents: Vec<String>
 }
 
 impl Question {
@@ -12,7 +13,8 @@ impl Question {
 		
 		Self {
 			message: msg.to_string(),
-			invalids: Vec::new()
+			invalids: Vec::new(),
+			invalids_contents: Vec::new()
 		}
 	}
 
@@ -23,9 +25,16 @@ impl Question {
 		self
 	}
 
-	/// Method description
+	/// Adds an invalid answer
 	pub fn not_valid(&mut self, value: String) -> &mut Self {
 		self.invalids.push(value);
+
+		self
+	}
+
+	/// Adds a restriction for the answer
+	pub fn not_containing(&mut self, value: String) -> &mut Self {
+		self.invalids_contents.push(value);
 
 		self
 	}
@@ -38,14 +47,27 @@ impl Question {
 		while !answered {
 			println!("{}", self.message);
 
-			stdin().read_line(&mut answer).expect("Error al leer la respuesta");
+			stdin().read_line(&mut answer).expect("Error reading the answer");
 			answer = answer.trim().to_string();
 
 			answered = true;
+
 			for invalid in &self.invalids {
 				if answer==*invalid {
 						answered = false;
 				}
+			}
+
+			for inv_cont in &self.invalids_contents {
+				if answer.contains(inv_cont) {
+					answered = false;
+
+					println!("Cannot have \"{}\" in the answer!", inv_cont);
+				}
+			}
+
+			if !answered {
+				println!("Invalid answer!");
 			}
 		}
 
