@@ -74,4 +74,22 @@ impl Question {
 
 		answer
 	}
+
+	/// Asks the configured question and resturns a number
+	pub fn ask_number(&self) -> i64 {
+		let mut numero: i64 = 0;
+		let mut numero_valido = false;
+
+		while !numero_valido {
+			match self.ask().parse::<i64>() {
+				Ok(num) => {
+					numero = num;
+					numero_valido = true;
+				}
+				Err(_) => println!("Invalid number!")
+			}
+		}
+
+		numero
+	}
 }
