@@ -26,15 +26,15 @@ impl Question {
 	}
 
 	/// Adds an invalid answer
-	pub fn not_valid(&mut self, value: String) -> &mut Self {
-		self.invalids.push(value);
+	pub fn not_valid(&mut self, value: &str) -> &mut Self {
+		self.invalids.push(value.to_string());
 
 		self
 	}
 
 	/// Adds a restriction for the answer
-	pub fn not_containing(&mut self, value: String) -> &mut Self {
-		self.invalids_contents.push(value);
+	pub fn not_containing(&mut self, value: &str) -> &mut Self {
+		self.invalids_contents.push(value.to_string());
 
 		self
 	}
@@ -54,7 +54,7 @@ impl Question {
 
 			for invalid in &self.invalids {
 				if answer==*invalid {
-						answered = false;
+					answered = false;
 				}
 			}
 
