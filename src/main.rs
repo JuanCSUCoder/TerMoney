@@ -12,5 +12,8 @@ fn main() {
 
 	println!("${} will be sent from {} to {}.", cantidad, origen, destino);
 
-	Question::new("Want to proceed? ").not_null().ask();
+	match Question::new("Want to proceed? ").not_null().ask_yn() {
+		true => println!("YES!"),
+		false => println!("Nou :(")
+	}
 }
