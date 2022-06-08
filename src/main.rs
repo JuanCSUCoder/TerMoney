@@ -8,7 +8,9 @@ fn main() {
 
 	let destino = Question::new("Escriba la cuenta de destino: ").not_null().not_containing(" ").ask();
 
-	println!("Se va a enviar $10000 desde {} hasta {}.", origen, destino);
+	let cantidad = Question::new("Cantidad a transferir: ").not_null().not_containing(".").not_containing(",").not_containing("$").ask_number();
+
+	println!("Se va a enviar ${} desde {} hasta {}.", cantidad, origen, destino);
 
 	Question::new("Desea continuar?").not_null().ask();
 }
