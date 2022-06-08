@@ -77,20 +77,20 @@ impl Question {
 
 	/// Asks the configured question and resturns a number
 	pub fn ask_number(&self) -> i64 {
-		let mut numero: i64 = 0;
-		let mut numero_valido = false;
+		let mut number: i64 = 0;
+		let mut is_valid = false;
 
-		while !numero_valido {
+		while !is_valid {
 			match self.ask().parse::<i64>() {
 				Ok(num) => {
-					numero = num;
-					numero_valido = true;
+					number = num;
+					is_valid = true;
 				}
 				Err(_) => println!("Invalid number!")
 			}
 		}
 
-		numero
+		number
 	}
 
 	/// Asks the configured yes or no question and return the result as a boolean
