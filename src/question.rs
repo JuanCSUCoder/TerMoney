@@ -46,6 +46,7 @@ impl Question {
 
 		while !answered {
 			println!("{}", self.message);
+			answer = String::new();
 
 			stdin().read_line(&mut answer).expect("Error reading the answer");
 			answer = answer.trim().to_string();
@@ -67,7 +68,7 @@ impl Question {
 			}
 
 			if !answered {
-				println!("Invalid answer!");
+				println!("Invalid answer \"{}\"!", answer);
 			}
 		}
 
