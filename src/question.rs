@@ -3,7 +3,7 @@ use std::io::stdin;
 /// It is a class that handle validation of questions in the terminal
 pub struct Question {
 	message: String,
-	null: bool
+	invalids: Vec<String>
 }
 
 impl Question {
@@ -12,13 +12,20 @@ impl Question {
 		
 		Self {
 			message: msg.to_string(),
-			null: true
+			invalids: Vec::new()
 		}
 	}
 
 	/// Sets the question configuration to refuse null answers
 	pub fn not_null(&mut self) -> &mut Self {
-		self.null = false;
+		self.invalids.push("".to_string());
+
+		self
+	}
+
+	/// Method description
+	pub fn not_valid(&mut self, value: String) -> &mut Self {
+		self.invalids.push(value);
 
 		self
 	}
@@ -34,8 +41,11 @@ impl Question {
 			stdin().read_line(&mut answer).expect("Error al leer la respuesta");
 			answer = answer.trim().to_string();
 
-			if self.null || answer!="" {
-				answered = true;
+			answered = true;
+			for invalid in &self.invalids {
+				if answer==*invalid {
+						answered = false;
+				}
 			}
 		}
 
