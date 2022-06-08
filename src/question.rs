@@ -92,4 +92,29 @@ impl Question {
 
 		numero
 	}
+
+	/// Asks the configured yes or no question and return the result as a boolean
+	pub fn ask_yn(&self) -> bool {
+		let mut answer = false;
+		let mut valid = false;
+
+		while !valid {
+			valid = true;
+
+			match &self.ask().to_uppercase()[..] {
+				"Y" => answer = true,
+				"N" => answer = false,
+				"YES" => answer = true,
+				"NO" => answer =false,
+
+				_ => {
+					valid = false;
+
+					println!("Please select YES(Y/y) or NO(N/n)");
+				}
+			}
+		}
+
+		answer
+	}
 }
