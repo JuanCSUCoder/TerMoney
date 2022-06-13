@@ -1,7 +1,7 @@
 mod question;
 mod transaction;
 
-use std::{fs::File, io::{Read, Write}};
+use std::{fs::{File, OpenOptions}, io::{Read, Write}};
 
 use crate::{question::Question, transaction::Transaction};
 
@@ -9,18 +9,17 @@ fn main() {
 	let registry_path = "registry.json";
 	let mut transactions: Vec<Transaction>;
 
-	{
-		// Open transactions file
-	let mut f = match File::open(registry_path) {
-		Ok(file) => file,
-		Err(_) => File::create(registry_path).expect("Unable to open the registry of transactions")
+	// Open transactions file
+	match File::open(registry_path) {
+		Ok(mut f) => {
+			let mut f_contents = String::new();
+			f.read_to_string(&mut f_contents).expect("Unable to read the registry of transactions");
+
+			transactions = serde_json::from_str(&f_contents).expect("Transaction Registry Corrupted");
+		},
+
+		Err(_) => transactions = Vec::new()
 	};
-
-	let mut f_contents = String::new();
-	f.read_to_string(&mut f_contents).expect("Unable to read the registry of transactions");
-
-	transactions = serde_json::from_str(&f_contents).expect("Transaction Registry Corrupted");
-	}
 
 	let origin = Question::new("Origin Account: ").not_null().not_containing(" ").ask();
 
