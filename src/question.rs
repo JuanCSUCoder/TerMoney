@@ -1,4 +1,4 @@
-use std::io::stdin;
+use std::io::{stdin, stdout, Write};
 
 /// It is a class that handle validation of questions in the terminal
 pub struct Question {
@@ -45,7 +45,8 @@ impl Question {
 		let mut answered = false;
 
 		while !answered {
-			println!("{}", self.message);
+			print!("{}", self.message);
+			stdout().flush().expect("Error flushing console output");
 			answer = String::new();
 
 			stdin().read_line(&mut answer).expect("Error reading the answer");
