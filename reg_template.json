@@ -1,0 +1,46 @@
+[
+	{
+		"id": "54651561561", // ID Transaction (Obligatorio),
+
+		"time": "<formato de fecha>", // Fecha y Hora transaccón (Obligatorio)
+
+		"from": "origin_account", // Cuenta de Origen (Obligatorio)
+		"to": "destination_account", // Cuenta de Destino (Obligatorio)
+
+		"description": "La descripción de la transacción", // Descripción de la transaccion (Opcional)
+		"amount": 2, // Cantidad de la Transaccion (Obligatorio)
+		"floating": 4, // Exponente de la cantidad para numeros decimales en base 10. En este caso representa 10^4 (Obligatorio)
+
+		"promise": true // Si es una transacción real o una promesa de una transaccion futura (Obligatorio)
+	},
+	{
+		"id": "368256243567",
+		"continues": "54651561561", // ID de la Promesa (Obligatorio)
+
+		"time": "<formato de fecha>",
+
+		"from": "origin_account",
+		"to": "destination_account",
+
+		"description": "La descripción de la transacción",
+		"amount": 1,
+		"floating": 4, // Exponente de la cantidad para numeros decimales en base 10. En este caso representa 10^4 (Obligatorio)
+
+		"promise": false // Es falso porque es parte del pago de una promesa
+	},
+	{
+		"id": "96857684236",
+		"continues": "54651561561",
+
+		"time": "<formato de fecha>",
+
+		"from": "origin_account",
+		"to": "destination_account",
+
+		"description": "La descripción de la transacción",
+		"amount": 1,
+		"floating": 4, // Exponente de la cantidad para numeros decimales en base 10. En este caso representa 10^4 (Obligatorio)
+
+		"promise": false
+	}
+]
