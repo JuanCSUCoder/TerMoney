@@ -38,4 +38,19 @@ impl Transaction {
 			money
 		}
 	}
+
+	/// Returns the ID of the transaction
+	pub fn getID(&self) -> i64 {
+		self.id
+	}
+
+	/// Returns the from attribute
+	pub fn getFrom(&self) -> String {
+		self.from.clone()
+	}
+
+	/// Returns the to attribute
+	pub fn getTo(&self) -> String {
+		self.to.clone()
+	}
 }
