@@ -1,11 +1,12 @@
 mod transaction;
 
-use std::{fs::File, io::Read};
+use std::{fs::File, io::{Read, Write}};
 
 use self::transaction::Transaction;
 
 /// A transaction registry
 pub struct Registry {
+	file_path: String,
 	new_id: i64,
 	accounts: Vec<String>,
 	transactions: Vec<Transaction>,
@@ -19,7 +20,7 @@ impl Registry {
 		let mut transactions: Vec<Transaction>;
 
 		// Open transactions file
-		match File::open(file_path) {
+		match File::open(&file_path) {
 			Ok(mut f) => {
 				let mut f_contents = String::new();
 				f.read_to_string(&mut f_contents).expect("Unable to read the registry of transactions");
@@ -53,9 +54,18 @@ impl Registry {
 		}
 
 		Self {
+			file_path,
 			new_id,
 			accounts,
 			transactions
 		}
+	}
+
+	/// Saves the current state to the registry file
+	pub fn save(&self) {
+			let mut f = File::create(&self.file_path).expect("Unable to rewrite the file");
+			let json = serde_json::to_string(&self.transactions).expect("Error serializing");
+
+			f.write_all(json.as_bytes()).expect("Unable to rewrite the file");
 	}
 }
