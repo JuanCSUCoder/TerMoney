@@ -1,7 +1,7 @@
 mod question;
 mod transaction;
 
-use std::{fs::{File, OpenOptions}, io::{Read, Write}};
+use std::{fs::{File}, io::{Read, Write}};
 
 use crate::{question::Question, transaction::Transaction};
 
@@ -29,7 +29,7 @@ fn main() {
 
 	println!("${} will be sent from {} to {}.", amount, origin, dest);
 
-	let trans = Transaction::new(origin, dest, amount);
+	let trans = Transaction::new(origin, dest, amount, 0);
 
 	match Question::new("Want to proceed? ").not_null().ask_yn() {
 		true => {
