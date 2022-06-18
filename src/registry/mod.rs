@@ -15,7 +15,8 @@ pub struct Registry {
 
 impl Registry {
 	/// Creates a registry from a file
-	pub fn new(file_path: String) -> Self {
+	pub fn new(reg_path: &str) -> Self {
+		let file_path = reg_path.to_string();
 		let mut new_id: i64 = 0;
 		let mut accounts: Vec<String> = Vec::new();
 		let mut transactions: Vec<Transaction>;
