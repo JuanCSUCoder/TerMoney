@@ -65,8 +65,8 @@ impl Registry {
 
 	/// Adds a new transaction promting the user through the CLI
 	pub fn add_from_cli(&mut self) {
-		let mut from: String = String::new();
-		let mut to: String = String::new();
+		let mut from: String;
+		let mut to: String;
 		
 		loop {
 			from = Question::new("Origin Account: ").not_null().not_containing(" ").ask();
