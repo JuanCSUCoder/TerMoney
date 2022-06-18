@@ -1,4 +1,4 @@
-use std::io::{stdin, stdout, Write};
+use std::{io::{stdin, stdout, Write}, u64};
 
 /// It is a class that handle validation of questions in the terminal
 pub struct Question {
@@ -88,6 +88,24 @@ impl Question {
 					is_valid = true;
 				}
 				Err(_) => println!("Invalid number!")
+			}
+		}
+
+		number
+	}
+
+	/// Asks the configured question and returns an unsigned number
+	pub fn ask_positive(&self) -> u64 {
+		let mut number: u64 = 0;
+		let mut is_valid = false;
+
+		while !is_valid {
+			match u64::try_from(self.ask_number()) {
+				Ok(result) => {
+					number = result;
+					is_valid = true;
+				},
+				Err(_) => println!("Must be a positive number")
 			}
 		}
 

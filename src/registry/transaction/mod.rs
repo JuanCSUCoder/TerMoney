@@ -22,7 +22,7 @@ pub struct Transaction {
 
 impl Transaction {
 	/// Create a new Transaction
-	pub fn new(id: i64, continues: Option<i64>, from: String, to: String, amount: i64, exponent: i64, description: Option<String>) -> Self {
+	pub fn new(id: i64, continues: Option<i64>, from: String, to: String, amount: u64, exponent: i64, description: Option<String>) -> Self {
 		let money = Money::new(amount, exponent);
 
 		Self {

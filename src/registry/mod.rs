@@ -96,7 +96,7 @@ impl Registry {
 			}
 		}
 
-		let amount = Question::new("Amount: ").not_null().not_containing(".").not_containing(",").not_containing("$").ask_number();
+		let amount = Question::new("Amount: ").not_null().not_containing(".").not_containing(",").not_containing("$").ask_positive();
 
 		println!("${} will be sent from {} to {}.", amount, from, to);
 
