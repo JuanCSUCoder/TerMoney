@@ -65,9 +65,36 @@ impl Registry {
 
 	/// Adds a new transaction promting the user through the CLI
 	pub fn add_from_cli(&mut self) {
-		let from = Question::new("Origin Account: ").not_null().not_containing(" ").ask();
+		let mut from: String = String::new();
+		let mut to: String = String::new();
+		
+		loop {
+			from = Question::new("Origin Account: ").not_null().not_containing(" ").ask();
 
-		let to = Question::new("Destination Account: ").not_null().not_containing(" ").ask();
+			if self.accounts.contains(&from) { break; } else {
+				match Question::new("Would you like to add this new account? (Y/N) ").not_null().ask_yn() {
+					true => {
+						self.accounts.push(from.clone());
+						break;
+					}
+					false => ()
+				}
+			}
+		}
+
+		loop {
+			to = Question::new("Destination Account: ").not_null().not_containing(" ").ask();
+
+			if self.accounts.contains(&to) { break; } else {
+				match Question::new("Would you like to add this new account? (Y/N) ").not_null().ask_yn() {
+					true => {
+						self.accounts.push(to.clone());
+						break;
+					}
+					false => ()
+				}
+			}
+		}
 
 		let amount = Question::new("Amount: ").not_null().not_containing(".").not_containing(",").not_containing("$").ask_number();
 
