@@ -113,6 +113,20 @@ impl Registry {
 			f.write_all(json.as_bytes()).expect("Unable to rewrite the file");
 	}
 
+	/// Displays all the transactions in console
+	pub fn show_transactions(&self) {
+		println!("FULL TRANSACTION REGISTRY");
+		println!("");
+		println!("| {: ^10} | {: ^35} | {: ^20} | {: ^20} | {: ^20} |", "ID", "DATE", "FROM", "TO", "AMOUNT");
+		println!("| __________ | ___________________________________ | ____________________ | ____________________ | ____________________ |");
+
+		for transaction in &self.transactions {
+			transaction.print_row();
+		}
+
+		println!("")
+	}
+
 	/// Generates a new ID an updates the ID count
 	fn generate_id(&mut self) -> i64{
 		self.new_id += 1;

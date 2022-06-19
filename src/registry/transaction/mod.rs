@@ -22,7 +22,7 @@ pub struct Transaction {
 
 impl Transaction {
 	/// Create a new Transaction
-	pub fn new(id: i64, continues: Option<i64>, from: String, to: String, amount: u64, exponent: i64, description: Option<String>) -> Self {
+	pub fn new(id: i64, continues: Option<i64>, from: String, to: String, amount: u64, exponent: i8, description: Option<String>) -> Self {
 		let money = Money::new(amount, exponent);
 
 		Self {
@@ -52,5 +52,16 @@ impl Transaction {
 	/// Returns the to attribute
 	pub fn getTo(&self) -> String {
 		self.to.clone()
+	}
+
+	/// Prints the transaction in a table row
+	pub fn print_row(&self) {
+		println!("| {: ^10} | {: ^35} | {: ^20} | {: ^20} | {: ^20} |", 
+			self.id,
+			self.time.to_string(),
+			self.from,
+			self.to,
+			self.money.to_string()
+		);
 	}
 }
