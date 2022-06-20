@@ -15,7 +15,7 @@ pub struct Registry {
 
 impl Registry {
 	/// Creates a registry from a file
-	pub fn new(reg_path: &str) -> Self {
+	pub fn new(reg_path: &str) -> Result<Self, ()> {
 		let file_path = reg_path.to_string();
 		let mut new_id: i64 = 0;
 		let mut accounts: Vec<String> = Vec::new();
@@ -27,39 +27,57 @@ impl Registry {
 				let mut f_contents = String::new();
 				f.read_to_string(&mut f_contents).expect("Unable to read the registry of transactions");
 
-				transactions = serde_json::from_str(&f_contents).expect("Transaction Registry Corrupted");
+				match serde_json::from_str(&f_contents) {
+					Ok(loaded) => {
+						transactions = loaded;
+
+						for transaction in &transactions {
+							// Fill Account List
+							let from = transaction.getFrom();
+							let to = transaction.getTo();
+
+							if !accounts.contains(&from) {
+								accounts.push(from);
+							}
+
+							if !accounts.contains(&to) {
+								accounts.push(to);
+							}
+
+							// Calculate New ID
+							let id = transaction.getID();
+
+							if new_id<id {
+								new_id = id;
+							}
+							new_id += 1;
+						}
+
+						Ok(
+							Self {
+								file_path,
+								new_id,
+								accounts,
+								transactions
+							}
+						)
+					},
+					Err(_) => Err(())
+				}
 			},
 
-			Err(_) => transactions = Vec::new()
-		};
+			Err(_) => {
+				transactions = Vec::new();
 
-		for transaction in &transactions {
-			// Fill Account List
-			let from = transaction.getFrom();
-			let to = transaction.getTo();
-
-			if !accounts.contains(&from) {
-				accounts.push(from);
+				Ok(
+					Self {
+						file_path,
+						new_id,
+						accounts,
+						transactions
+					}
+				)
 			}
-
-			if !accounts.contains(&to) {
-				accounts.push(to);
-			}
-
-			// Calculate New ID
-			let id = transaction.getID();
-
-			if new_id<id {
-				new_id = id;
-			}
-			new_id += 1;
-		}
-
-		Self {
-			file_path,
-			new_id,
-			accounts,
-			transactions
 		}
 	}
 
