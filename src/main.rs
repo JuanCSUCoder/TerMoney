@@ -33,6 +33,10 @@ fn main() {
 	let query_menu = Menu::new("Transactions Query Menu")
     .add_option("All Transactions")
     .add_option("An Specific Account");
+	let insert_menu = Menu::new("Transaction Insertion Menu")
+    .add_option("Closed Transaction")
+    .add_option("Promise")
+    .add_option("Promise Payment");
 
 	loop {
 		match main_menu.display() {
@@ -44,7 +48,15 @@ fn main() {
 					_ => panic!("Unexpected")
 				}
 			},
-			2 => reg.add_from_cli(),
+			2 => loop {
+				match insert_menu.display() {
+					1 => reg.add_from_cli(),
+					2 => println!("Unimplemented"),
+					3 => println!("Unimplemented"),
+					0 => break,
+					_ => panic!("Unexpected")
+				}
+			},
 			0 => break,
 			_ => panic!("Unexpected menu return value")
 		}

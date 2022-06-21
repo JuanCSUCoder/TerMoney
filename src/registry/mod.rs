@@ -114,13 +114,29 @@ impl Registry {
 			}
 		}
 
-		let amount = Question::new("Amount: ").not_null().not_containing(".").not_containing(",").not_containing("$").ask_positive();
+		let description = Question::new("Description: ").ask();
+
+		let amount = Question::new("Digits: ").not_null().not_containing(".").not_containing(",").not_containing("$").ask_positive();
+
+		let mut exponent = 0;
+
+		loop {
+			match i8::try_from(Question::new("Base 10 Exponent: ").not_null().not_containing(".").not_containing(",").not_containing("$").ask_number()) {
+				Ok(exp) => {
+					exponent = exp;
+					break;
+				},
+				Err(_) => println!("The number is too large")
+			}
+		}
 
 		println!("${} will be sent from {} to {}.", amount, from, to);
 
-		let new_transact = Transaction::new(self.generate_id(), None, from, to, amount, 0, None);
+		let new_transact = Transaction::new(self.generate_id(), None, from.clone(), to.clone(), amount, exponent, Some(description.clone()));
+		let closing_transact = Transaction::new(self.generate_id(), Some(new_transact.getID()), from, to, amount, exponent, Some(description));
 
 		self.transactions.push(new_transact);
+		self.transactions.push(closing_transact);
 	}
 
 	/// Saves the current state to the registry file
