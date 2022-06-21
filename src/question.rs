@@ -19,21 +19,21 @@ impl Question {
 	}
 
 	/// Sets the question configuration to refuse null answers
-	pub fn not_null(&mut self) -> &mut Self {
+	pub fn not_null(mut self) -> Self {
 		self.invalids.push("".to_string());
 
 		self
 	}
 
 	/// Adds an invalid answer
-	pub fn not_valid(&mut self, value: &str) -> &mut Self {
+	pub fn not_valid(mut self, value: &str) -> Self {
 		self.invalids.push(value.to_string());
 
 		self
 	}
 
 	/// Adds a restriction for the answer
-	pub fn not_containing(&mut self, value: &str) -> &mut Self {
+	pub fn not_containing(mut self, value: &str) -> Self {
 		self.invalids_contents.push(value.to_string());
 
 		self
