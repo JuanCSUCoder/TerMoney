@@ -34,14 +34,14 @@ fn main() {
 		loop {
 			match main_menu.display() {
 				1 => reg.show_transactions(),
-				2 => println!("Insert"),
+				2 => reg.add_from_cli(),
 				0 => break,
 				_ => panic!("Unexpected menu return value")
 			}
 		}
 
-	// reg.add_from_cli();
-	// reg.save();
+	println!("Saving changes...");
+	reg.save();
 
 	println!("Goodbye!")
 }
