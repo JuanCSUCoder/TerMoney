@@ -30,15 +30,25 @@ fn main() {
 	let main_menu = Menu::new("Transaction Managment and Registry System")
     .add_option("Query Transactions and Accounts")
     .add_option("Insert Transaction");
+	let query_menu = Menu::new("Transactions Query Menu")
+    .add_option("All Transactions")
+    .add_option("An Specific Account");
 
-		loop {
-			match main_menu.display() {
-				1 => reg.show_transactions(),
-				2 => reg.add_from_cli(),
-				0 => break,
-				_ => panic!("Unexpected menu return value")
-			}
+	loop {
+		match main_menu.display() {
+			1 => loop {
+				match query_menu.display() {
+					1 => reg.show_transactions(),
+					2 => println!("Unimplemented"),
+					0 => break,
+					_ => panic!("Unexpected")
+				}
+			},
+			2 => reg.add_from_cli(),
+			0 => break,
+			_ => panic!("Unexpected menu return value")
 		}
+	}
 
 	println!("Saving changes...");
 	reg.save();
