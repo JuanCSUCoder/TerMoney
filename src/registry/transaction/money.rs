@@ -31,9 +31,30 @@ impl Money {
 
 impl Display for Money {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-			let base: f64 = 10.0;
-			let result: f64 = (self.amount as f64)*base.powi(self.exponent.into());
+			let mut printable = self.amount.to_string();
 
-			write!(f, "$ {}", result)
+			if self.exponent>=0 {
+				// Add zeros
+				for _ in 0..self.exponent {
+					printable.push('0');
+				}
+			} else {
+				let integer_size = (printable.len() as i64)+(self.exponent as i64);
+
+				if integer_size>0 {
+					
+				} else {
+					let mut zeros = String::new();
+					let limit = -integer_size;
+
+					for _ in 0..limit {
+						zeros.push('0');
+					}
+
+					printable = format!("0,{}{}", zeros, printable);
+				}
+			}
+
+			write!(f, "$ {}", printable)
     }
 }
