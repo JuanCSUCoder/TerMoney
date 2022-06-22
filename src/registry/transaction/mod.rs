@@ -58,16 +58,28 @@ impl Transaction {
 	pub fn print_row(&self) {
 		let desc = match &self.description {
 			Some(val) => val.clone(),
-			None => "".to_string()
+			None => "  -  ".to_string()
 		};
+
+		let desc = desc.chars()
+    .collect::<Vec<char>>()
+    .chunks(33)
+    .map(|c| c.iter().collect::<String>())
+    .collect::<Vec<String>>();
+
+		let mut descs = desc.into_iter();
 
 		println!("| {: ^10} | {: ^15} | {: ^35} | {: ^20} | {: ^20} | {: ^20} |", 
 			self.id,
 			self.time.format("%a %b %e/%y").to_string(),
-			desc,
+			descs.next().unwrap(),
 			self.from,
 			self.to,
 			self.money.to_string()
 		);
+
+		for des in descs {
+			println!("| {: ^10} | {: ^15} | {: ^35} | {: ^20} | {: ^20} | {: ^20} |", "", "", des, "", "" ,"");
+		}
 	}
 }
