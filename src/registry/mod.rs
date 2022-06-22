@@ -2,6 +2,8 @@ mod transaction;
 
 use std::{fs::File, io::{Read, Write}};
 
+use prettytable::table;
+
 use self::transaction::Transaction;
 use crate::question::Question;
 
@@ -150,14 +152,14 @@ impl Registry {
 	/// Displays all the transactions in console
 	pub fn show_transactions(&self) {
 		println!("FULL TRANSACTION REGISTRY");
-		println!("");
-		println!("| {: ^10} | {: ^15} | {: ^35} | {: ^20} | {: ^20} | {: ^20} |", "ID", "DATE", "DESCRIPTION", "FROM", "TO", "AMOUNT");
-		println!("| __________ | _______________ | ___________________________________ | ____________________ | ____________________ | ____________________ |");
+
+		let mut table = table!(["ID", "DATE", "DESCRIPTION", "FROM", "TO", "AMOUNT"]);
 
 		for transaction in &self.transactions {
-			transaction.print_row();
+			transaction.print_row(&mut table);
 		}
 
+		table.printstd();
 		println!("")
 	}
 

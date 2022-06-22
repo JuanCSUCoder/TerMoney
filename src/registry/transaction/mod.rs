@@ -1,6 +1,7 @@
 mod money;
 
 use chrono::{DateTime, Utc};
+use prettytable::{Table, Row};
 use serde::{Serialize, Deserialize};
 
 use self::money::Money;
@@ -55,7 +56,7 @@ impl Transaction {
 	}
 
 	/// Prints the transaction in a table row
-	pub fn print_row(&self) {
+	pub fn print_row(&self, table: &mut Table) {
 		let desc = match &self.description {
 			Some(val) => val.clone(),
 			None => "  -  ".to_string()
@@ -65,21 +66,8 @@ impl Transaction {
     .collect::<Vec<char>>()
     .chunks(33)
     .map(|c| c.iter().collect::<String>())
-    .collect::<Vec<String>>();
+    .collect::<Vec<String>>().join("\n");
 
-		let mut descs = desc.into_iter();
-
-		println!("| {: ^10} | {: ^15} | {: ^35} | {: ^20} | {: ^20} | {: ^20} |", 
-			self.id,
-			self.time.format("%a %b %e/%y").to_string(),
-			descs.next().unwrap(),
-			self.from,
-			self.to,
-			self.money.to_string()
-		);
-
-		for des in descs {
-			println!("| {: ^10} | {: ^15} | {: ^35} | {: ^20} | {: ^20} | {: ^20} |", "", "", des, "", "" ,"");
-		}
+		table.add_row(row![self.id, self.time.format("%a %b %e/%y"), desc, self.from, self.to, self.money]);
 	}
 }

@@ -1,3 +1,5 @@
+#[macro_use] extern crate prettytable;
+
 mod question;
 mod registry;
 mod menu;
