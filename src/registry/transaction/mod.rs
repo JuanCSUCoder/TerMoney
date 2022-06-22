@@ -56,9 +56,15 @@ impl Transaction {
 
 	/// Prints the transaction in a table row
 	pub fn print_row(&self) {
-		println!("| {: ^10} | {: ^35} | {: ^20} | {: ^20} | {: ^20} |", 
+		let desc = match &self.description {
+			Some(val) => val.clone(),
+			None => "".to_string()
+		};
+
+		println!("| {: ^10} | {: ^15} | {: ^35} | {: ^20} | {: ^20} | {: ^20} |", 
 			self.id,
-			self.time.to_string(),
+			self.time.format("%a %b %e/%y").to_string(),
+			desc,
 			self.from,
 			self.to,
 			self.money.to_string()

@@ -151,8 +151,8 @@ impl Registry {
 	pub fn show_transactions(&self) {
 		println!("FULL TRANSACTION REGISTRY");
 		println!("");
-		println!("| {: ^10} | {: ^35} | {: ^20} | {: ^20} | {: ^20} |", "ID", "DATE", "FROM", "TO", "AMOUNT");
-		println!("| __________ | ___________________________________ | ____________________ | ____________________ | ____________________ |");
+		println!("| {: ^10} | {: ^15} | {: ^35} | {: ^20} | {: ^20} | {: ^20} |", "ID", "DATE", "DESCRIPTION", "FROM", "TO", "AMOUNT");
+		println!("| __________ | ___________________________________ | ___________________________________ | ____________________ | ____________________ | ____________________ |");
 
 		for transaction in &self.transactions {
 			transaction.print_row();
