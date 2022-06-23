@@ -2,7 +2,7 @@ mod transaction;
 
 use std::{fs::File, io::{Read, Write}};
 
-use prettytable::table;
+use prettytable::{table, Table};
 
 use self::transaction::Transaction;
 use crate::question::Question;
@@ -153,7 +153,8 @@ impl Registry {
 	pub fn show_transactions(&self) {
 		println!("FULL TRANSACTION REGISTRY");
 
-		let mut table = table!(["ID", "DATE", "DESCRIPTION", "FROM", "TO", "AMOUNT"]);
+		let mut table = Table::new();
+		table.set_titles(row![bc => "ID", "DATE", "DESCRIPTION", "FROM", "TO", "AMOUNT"]);
 
 		for transaction in &self.transactions {
 			transaction.print_row(&mut table);

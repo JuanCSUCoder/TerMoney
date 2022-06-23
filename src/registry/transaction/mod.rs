@@ -68,6 +68,6 @@ impl Transaction {
     .map(|c| c.iter().collect::<String>())
     .collect::<Vec<String>>().join("\n");
 
-		table.add_row(row![self.id, self.time.format("%a %b %e/%y"), desc, self.from, self.to, self.money]);
+		table.add_row(row![FB -> self.id, self.time.format("%a %b %e/%y"), desc, self.from, self.to, r -> self.money]);
 	}
 }
