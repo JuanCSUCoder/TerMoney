@@ -1,168 +1,211 @@
 mod transaction;
 
-use std::{fs::File, io::{Read, Write}};
+use std::{
+    fs::File,
+    io::{Read, Write},
+};
 
-use prettytable::{table, Table};
+use prettytable::Table;
 
 use self::transaction::Transaction;
 use crate::question::Question;
 
 /// A transaction registry
 pub struct Registry {
-	file_path: String,
-	new_id: i64,
-	accounts: Vec<String>,
-	transactions: Vec<Transaction>,
+    file_path: String,
+    new_id: i64,
+    accounts: Vec<String>,
+    transactions: Vec<Transaction>,
 }
 
 impl Registry {
-	/// Creates a registry from a file
-	pub fn new(reg_path: &str) -> Result<Self, ()> {
-		let file_path = reg_path.to_string();
-		let mut new_id: i64 = 0;
-		let mut accounts: Vec<String> = Vec::new();
-		let mut transactions: Vec<Transaction>;
+    /// Creates a registry from a file
+    pub fn new(reg_path: &str) -> Result<Self, ()> {
+        let file_path = reg_path.to_string();
+        let mut new_id: i64 = 0;
+        let mut accounts: Vec<String> = Vec::new();
+        let transactions: Vec<Transaction>;
 
-		// Open transactions file
-		match File::open(&file_path) {
-			Ok(mut f) => {
-				let mut f_contents = String::new();
-				f.read_to_string(&mut f_contents).expect("Unable to read the registry of transactions");
+        // Open transactions file
+        match File::open(&file_path) {
+            Ok(mut f) => {
+                let mut f_contents = String::new();
+                f.read_to_string(&mut f_contents)
+                    .expect("Unable to read the registry of transactions");
 
-				match serde_json::from_str(&f_contents) {
-					Ok(loaded) => {
-						transactions = loaded;
+                match serde_json::from_str(&f_contents) {
+                    Ok(loaded) => {
+                        transactions = loaded;
 
-						for transaction in &transactions {
-							// Fill Account List
-							let from = transaction.getFrom();
-							let to = transaction.getTo();
+                        for transaction in &transactions {
+                            // Fill Account List
+                            let from = transaction.get_from();
+                            let to = transaction.get_to();
 
-							if !accounts.contains(&from) {
-								accounts.push(from);
-							}
+                            if !accounts.contains(&from) {
+                                accounts.push(from);
+                            }
 
-							if !accounts.contains(&to) {
-								accounts.push(to);
-							}
+                            if !accounts.contains(&to) {
+                                accounts.push(to);
+                            }
 
-							// Calculate New ID
-							let id = transaction.getID();
+                            // Calculate New ID
+                            let id = transaction.get_id();
 
-							if new_id<id {
-								new_id = id;
-							}
-							new_id += 1;
-						}
+                            if new_id < id {
+                                new_id = id;
+                            }
+                            new_id += 1;
+                        }
 
-						Ok(
-							Self {
-								file_path,
-								new_id,
-								accounts,
-								transactions
-							}
-						)
-					},
-					Err(_) => Err(())
-				}
-			},
+                        Ok(Self {
+                            file_path,
+                            new_id,
+                            accounts,
+                            transactions,
+                        })
+                    }
+                    Err(_) => Err(()),
+                }
+            }
 
-			Err(_) => {
-				transactions = Vec::new();
+            Err(_) => {
+                transactions = Vec::new();
 
-				Ok(
-					Self {
-						file_path,
-						new_id,
-						accounts,
-						transactions
-					}
-				)
-			}
-		}
-	}
+                Ok(Self {
+                    file_path,
+                    new_id,
+                    accounts,
+                    transactions,
+                })
+            }
+        }
+    }
 
-	/// Adds a new closed transaction promting the user through the CLI
-	pub fn add_from_cli(&mut self) {
-		let mut from: String;
-		let mut to: String;
-		
-		loop {
-			from = Question::new("Origin Account: ").not_null().not_containing(" ").ask();
+    /// Adds a new closed transaction promting the user through the CLI
+    pub fn add_from_cli(&mut self) {
+        let mut from: String;
+        let mut to: String;
 
-			if self.accounts.contains(&from) { break; } else {
-				match Question::new("Would you like to add this new account? (Y/N) ").not_null().ask_yn() {
-					true => {
-						self.accounts.push(from.clone());
-						break;
-					}
-					false => ()
-				}
-			}
-		}
+        loop {
+            from = Question::new("Origin Account: ")
+                .not_null()
+                .not_containing(" ")
+                .ask();
 
-		loop {
-			to = Question::new("Destination Account: ").not_null().not_containing(" ").ask();
+            if self.accounts.contains(&from) {
+                break;
+            } else {
+                match Question::new("Would you like to add this new account? (Y/N) ")
+                    .not_null()
+                    .ask_yn()
+                {
+                    true => {
+                        self.accounts.push(from.clone());
+                        break;
+                    }
+                    false => (),
+                }
+            }
+        }
 
-			if self.accounts.contains(&to) { break; } else {
-				match Question::new("Would you like to add this new account? (Y/N) ").not_null().ask_yn() {
-					true => {
-						self.accounts.push(to.clone());
-						break;
-					}
-					false => ()
-				}
-			}
-		}
+        loop {
+            to = Question::new("Destination Account: ")
+                .not_null()
+                .not_containing(" ")
+                .ask();
 
-		let description = Question::new("Description: ").ask();
+            if self.accounts.contains(&to) {
+                break;
+            } else {
+                match Question::new("Would you like to add this new account? (Y/N) ")
+                    .not_null()
+                    .ask_yn()
+                {
+                    true => {
+                        self.accounts.push(to.clone());
+                        break;
+                    }
+                    false => (),
+                }
+            }
+        }
 
-		let amount = Question::new("Digits: ").not_null().not_containing(".").not_containing(",").not_containing("$").ask_positive();
+        let description = Question::new("Description: ").ask();
 
-		let mut exponent = Question::new("Base 10 Exponent: ").not_null().not_containing(".").not_containing(",").not_containing("$").ask_numeric_type::<i8>();
+        let amount = Question::new("Digits: ")
+            .not_null()
+            .not_containing(".")
+            .not_containing(",")
+            .not_containing("$")
+            .ask_positive();
 
-		println!("${} will be sent from {} to {}.", amount, from, to);
+        let exponent = Question::new("Base 10 Exponent: ")
+            .not_null()
+            .not_containing(".")
+            .not_containing(",")
+            .not_containing("$")
+            .ask_numeric_type::<i8>();
 
-		let new_transact = Transaction::new(self.generate_id(), None, from.clone(), to.clone(), amount, exponent, Some(description.clone()));
-		let closing_transact = Transaction::new(self.generate_id(), Some(new_transact.getID()), from, to, amount, exponent, Some(description));
+        println!("${} will be sent from {} to {}.", amount, from, to);
 
-		self.transactions.push(new_transact);
-		self.transactions.push(closing_transact);
-	}
+        let new_transact = Transaction::new(
+            self.generate_id(),
+            None,
+            from.clone(),
+            to.clone(),
+            amount,
+            exponent,
+            Some(description.clone()),
+        );
+        let closing_transact = Transaction::new(
+            self.generate_id(),
+            Some(new_transact.get_id()),
+            from,
+            to,
+            amount,
+            exponent,
+            Some(description),
+        );
 
-	/// Adds a promise transaction promting the user through the CLI 
-	pub fn add_promise_cli(&mut self) {
-		todo!()
-	}
+        self.transactions.push(new_transact);
+        self.transactions.push(closing_transact);
+    }
 
-	/// Saves the current state to the registry file
-	pub fn save(&self) {
-			let mut f = File::create(&self.file_path).expect("Unable to rewrite the file");
-			let json = serde_json::to_string(&self.transactions).expect("Error serializing");
+    /// Adds a promise transaction promting the user through the CLI
+    pub fn add_promise_cli(&mut self) {
+        todo!()
+    }
 
-			f.write_all(json.as_bytes()).expect("Unable to rewrite the file");
-	}
+    /// Saves the current state to the registry file
+    pub fn save(&self) {
+        let mut f = File::create(&self.file_path).expect("Unable to rewrite the file");
+        let json = serde_json::to_string(&self.transactions).expect("Error serializing");
 
-	/// Displays all the transactions in console
-	pub fn show_transactions(&self) {
-		println!("FULL TRANSACTION REGISTRY");
+        f.write_all(json.as_bytes())
+            .expect("Unable to rewrite the file");
+    }
 
-		let mut table = Table::new();
-		table.set_titles(row![bc => "ID", "DATE", "DESCRIPTION", "FROM", "TO", "TYPE", "AMOUNT"]);
+    /// Displays all the transactions in console
+    pub fn show_transactions(&self) {
+        println!("FULL TRANSACTION REGISTRY");
 
-		for transaction in &self.transactions {
-			transaction.print_row(&mut table);
-		}
+        let mut table = Table::new();
+        table.set_titles(row![bc => "ID", "DATE", "DESCRIPTION", "FROM", "TO", "TYPE", "AMOUNT"]);
 
-		table.printstd();
-		println!("")
-	}
+        for transaction in &self.transactions {
+            transaction.print_row(&mut table);
+        }
 
-	/// Generates a new ID an updates the ID count
-	fn generate_id(&mut self) -> i64{
-		self.new_id += 1;
+        table.printstd();
+        println!("")
+    }
 
-		self.new_id-1
-	}
+    /// Generates a new ID an updates the ID count
+    fn generate_id(&mut self) -> i64 {
+        self.new_id += 1;
+
+        self.new_id - 1
+    }
 }
