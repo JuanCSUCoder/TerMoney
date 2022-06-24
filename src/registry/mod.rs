@@ -175,7 +175,82 @@ impl Registry {
 
     /// Adds a promise transaction promting the user through the CLI
     pub fn add_promise_cli(&mut self) {
-        todo!()
+        let mut from: String;
+        let mut to: String;
+
+        loop {
+            from = Question::new("Origin Account: ")
+                .not_null()
+                .not_containing(" ")
+                .ask();
+
+            if self.accounts.contains(&from) {
+                break;
+            } else {
+                match Question::new("Would you like to add this new account? (Y/N) ")
+                    .not_null()
+                    .ask_yn()
+                {
+                    true => {
+                        self.accounts.push(from.clone());
+                        break;
+                    }
+                    false => (),
+                }
+            }
+        }
+
+        loop {
+            to = Question::new("Destination Account: ")
+                .not_null()
+                .not_containing(" ")
+                .ask();
+
+            if self.accounts.contains(&to) {
+                break;
+            } else {
+                match Question::new("Would you like to add this new account? (Y/N) ")
+                    .not_null()
+                    .ask_yn()
+                {
+                    true => {
+                        self.accounts.push(to.clone());
+                        break;
+                    }
+                    false => (),
+                }
+            }
+        }
+
+        let description = Question::new("Description: ").ask();
+
+        let amount = Question::new("Digits: ")
+            .not_null()
+            .not_containing(".")
+            .not_containing(",")
+            .not_containing("$")
+            .ask_positive();
+
+        let exponent = Question::new("Base 10 Exponent: ")
+            .not_null()
+            .not_containing(".")
+            .not_containing(",")
+            .not_containing("$")
+            .ask_numeric_type::<i8>();
+
+        println!("${} will be sent from {} to {}.", amount, from, to);
+
+        let new_transact = Transaction::new(
+            self.generate_id(),
+            None,
+            from.clone(),
+            to.clone(),
+            amount,
+            exponent,
+            Some(description.clone()),
+        );
+
+		self.transactions.push(new_transact)
     }
 
     /// Saves the current state to the registry file

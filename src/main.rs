@@ -53,7 +53,7 @@ fn main() {
 			2 => loop {
 				match insert_menu.display() {
 					1 => reg.add_from_cli(),
-					2 => println!("Unimplemented"),
+					2 => reg.add_promise_cli(),
 					3 => println!("Unimplemented"),
 					0 => break,
 					_ => panic!("Unexpected")
