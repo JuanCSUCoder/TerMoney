@@ -149,7 +149,7 @@ impl Registry {
 		println!("FULL TRANSACTION REGISTRY");
 
 		let mut table = Table::new();
-		table.set_titles(row![bc => "ID", "DATE", "DESCRIPTION", "FROM", "TO", "AMOUNT"]);
+		table.set_titles(row![bc => "ID", "DATE", "DESCRIPTION", "FROM", "TO", "TYPE", "AMOUNT"]);
 
 		for transaction in &self.transactions {
 			transaction.print_row(&mut table);

@@ -57,6 +57,11 @@ impl Transaction {
 
 	/// Prints the transaction in a table row
 	pub fn print_row(&self, table: &mut Table) {
+		let kind = match self.continues {
+			None => "Promise".to_string(),
+			Some(cod) => format!("Pay-{}",cod)
+		};
+
 		let desc = match &self.description {
 			Some(val) => val.clone(),
 			None => "  -  ".to_string()
@@ -68,6 +73,6 @@ impl Transaction {
     .map(|c| c.iter().collect::<String>())
     .collect::<Vec<String>>().join("\n");
 
-		table.add_row(row![FB -> self.id, self.time.format("%a %b %e/%y"), desc, self.from, self.to, r -> self.money]);
+		table.add_row(row![FB -> self.id, self.time.format("%a %b %e/%y"), desc, self.from, self.to, kind, r -> self.money]);
 	}
 }
