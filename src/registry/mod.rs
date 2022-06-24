@@ -83,7 +83,7 @@ impl Registry {
 		}
 	}
 
-	/// Adds a new transaction promting the user through the CLI
+	/// Adds a new closed transaction promting the user through the CLI
 	pub fn add_from_cli(&mut self) {
 		let mut from: String;
 		let mut to: String;
@@ -120,17 +120,7 @@ impl Registry {
 
 		let amount = Question::new("Digits: ").not_null().not_containing(".").not_containing(",").not_containing("$").ask_positive();
 
-		let mut exponent = 0;
-
-		loop {
-			match i8::try_from(Question::new("Base 10 Exponent: ").not_null().not_containing(".").not_containing(",").not_containing("$").ask_number()) {
-				Ok(exp) => {
-					exponent = exp;
-					break;
-				},
-				Err(_) => println!("The number is too large")
-			}
-		}
+		let mut exponent = Question::new("Base 10 Exponent: ").not_null().not_containing(".").not_containing(",").not_containing("$").ask_numeric_type::<i8>();
 
 		println!("${} will be sent from {} to {}.", amount, from, to);
 
@@ -139,6 +129,11 @@ impl Registry {
 
 		self.transactions.push(new_transact);
 		self.transactions.push(closing_transact);
+	}
+
+	/// Adds a promise transaction promting the user through the CLI 
+	pub fn add_promise_cli(&mut self) {
+		todo!()
 	}
 
 	/// Saves the current state to the registry file
