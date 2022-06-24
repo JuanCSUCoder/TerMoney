@@ -19,7 +19,7 @@ impl Money {
 			}
 		}
 
-		/// Creates a new money amount with base 10 ezponent cero
+		/// Creates a new money amount with base 10 exponent zero
 		pub fn new_from_unsigned(amount: u64) -> Self {
 			
 			Self {
