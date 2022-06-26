@@ -13,7 +13,7 @@ use crate::question::Question;
 /// A transaction registry
 pub struct Registry {
     file_path: String,
-    new_id: i64,
+    new_id: u64,
     accounts: Vec<String>,
     transactions: Vec<Transaction>,
 }
@@ -22,7 +22,7 @@ impl Registry {
     /// Creates a registry from a file
     pub fn new(reg_path: &str) -> Result<Self, ()> {
         let file_path = reg_path.to_string();
-        let mut new_id: i64 = 0;
+        let mut new_id: u64 = 0;
         let mut accounts: Vec<String> = Vec::new();
         let transactions: Vec<Transaction>;
 
@@ -253,6 +253,17 @@ impl Registry {
 		self.transactions.push(new_transact)
     }
 
+		/// Adds a promise payment transaction promting the user through the CLI
+		pub fn add_payment_cli(&mut self) {
+			// Select the promise to pay
+			let cont_id: u64;
+			loop {
+				
+			}
+
+
+		}
+
     /// Saves the current state to the registry file
     pub fn save(&self) {
         let mut f = File::create(&self.file_path).expect("Unable to rewrite the file");
@@ -278,7 +289,7 @@ impl Registry {
     }
 
     /// Generates a new ID an updates the ID count
-    fn generate_id(&mut self) -> i64 {
+    fn generate_id(&mut self) -> u64 {
         self.new_id += 1;
 
         self.new_id - 1

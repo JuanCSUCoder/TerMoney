@@ -54,7 +54,7 @@ fn main() {
 				match insert_menu.display() {
 					1 => reg.add_from_cli(),
 					2 => reg.add_promise_cli(),
-					3 => println!("Unimplemented"),
+					3 => reg.add_payment_cli(),
 					0 => break,
 					_ => panic!("Unexpected")
 				}

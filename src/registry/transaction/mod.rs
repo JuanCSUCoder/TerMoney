@@ -9,8 +9,8 @@ use self::money::Money;
 #[derive(Serialize, Deserialize)]
 /// A transaction
 pub struct Transaction {
-    id: i64,
-    continues: Option<i64>,
+    id: u64,
+    continues: Option<u64>,
 
     time: DateTime<Utc>,
 
@@ -24,8 +24,8 @@ pub struct Transaction {
 impl Transaction {
     /// Create a new Transaction
     pub fn new(
-        id: i64,
-        continues: Option<i64>,
+        id: u64,
+        continues: Option<u64>,
         from: String,
         to: String,
         amount: u64,
@@ -49,7 +49,7 @@ impl Transaction {
     }
 
     /// Returns the ID of the transaction
-    pub fn get_id(&self) -> i64 {
+    pub fn get_id(&self) -> u64 {
         self.id
     }
 
