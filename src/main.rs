@@ -4,6 +4,7 @@ mod question;
 mod registry;
 mod menu;
 mod utils;
+mod floating_decimal;
 
 use menu::Menu;
 use question::Question;

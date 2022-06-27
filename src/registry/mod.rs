@@ -139,14 +139,7 @@ impl Registry {
             .not_containing(".")
             .not_containing(",")
             .not_containing("$")
-            .ask_positive();
-
-        let exponent = Question::new("Base 10 Exponent: ")
-            .not_null()
-            .not_containing(".")
-            .not_containing(",")
-            .not_containing("$")
-            .ask_numeric_type::<i8>();
+            .ask_floating_decimal();
 
         println!("${} will be sent from {} to {}.", amount, from, to);
 
@@ -156,7 +149,6 @@ impl Registry {
             from.clone(),
             to.clone(),
             amount,
-            exponent,
             Some(description.clone()),
         );
         let closing_transact = Transaction::new(
@@ -165,7 +157,6 @@ impl Registry {
             from,
             to,
             amount,
-            exponent,
             Some(description),
         );
 
@@ -229,14 +220,7 @@ impl Registry {
             .not_containing(".")
             .not_containing(",")
             .not_containing("$")
-            .ask_positive();
-
-        let exponent = Question::new("Base 10 Exponent: ")
-            .not_null()
-            .not_containing(".")
-            .not_containing(",")
-            .not_containing("$")
-            .ask_numeric_type::<i8>();
+            .ask_floating_decimal();
 
         println!("${} will be sent from {} to {}.", amount, from, to);
 
@@ -246,7 +230,6 @@ impl Registry {
             from.clone(),
             to.clone(),
             amount,
-            exponent,
             Some(description.clone()),
         );
 
@@ -258,10 +241,22 @@ impl Registry {
 			// Select the promise to pay
 			let cont_id: u64;
 			loop {
-				
+				break;
 			}
 
+			// Ask a valid (lower or equal to the remaining amount) amount
+			loop {
+				let amount = Question::new("Digits: ")
+            .not_null()
+            .not_containing(".")
+            .not_containing(",")
+            .not_containing("$")
+            .ask_floating_decimal();
+				
+				// Check if its less or equal to the remaining amount
+			}
 
+			// Save the transaction
 		}
 
     /// Saves the current state to the registry file

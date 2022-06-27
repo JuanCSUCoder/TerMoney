@@ -4,6 +4,8 @@ use chrono::{DateTime, Utc};
 use prettytable::Table;
 use serde::{Deserialize, Serialize};
 
+use crate::floating_decimal::FloatingPointDecimal;
+
 use self::money::Money;
 
 #[derive(Serialize, Deserialize)]
@@ -18,7 +20,7 @@ pub struct Transaction {
     to: String,
     description: Option<String>,
 
-    money: Money,
+    money: FloatingPointDecimal,
 }
 
 impl Transaction {
@@ -28,12 +30,9 @@ impl Transaction {
         continues: Option<u64>,
         from: String,
         to: String,
-        amount: u64,
-        exponent: i8,
+        money: FloatingPointDecimal,
         description: Option<String>,
     ) -> Self {
-        let money = Money::new(amount, exponent);
-
         Self {
             id,
             continues,

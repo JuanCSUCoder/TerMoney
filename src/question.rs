@@ -4,6 +4,8 @@ use std::{
     u64,
 };
 
+use crate::floating_decimal::FloatingPointDecimal;
+
 /// It is a class that handle validation of questions in the terminal
 pub struct Question {
     message: String,
@@ -99,13 +101,26 @@ impl Question {
         number
     }
 
+		/// Asks the configured question and returns a FloatingPointDecimal
+		pub fn ask_floating_decimal(&mut self) -> FloatingPointDecimal {
+			let base = self.message.clone();
+			
+			self.message = format!("{} (Integer Part): ", base);
+			let integer = self.ask_positive();
+
+			self.message = format!("{} (Exponent): ", base);
+			let exponent = self.ask_numeric_type();
+
+			FloatingPointDecimal::new(integer, exponent)
+		}
+
     /// Asks the configured question and returns an unsigned number
-    pub fn ask_positive(&self) -> u64 {
-        let mut number: u64 = 0;
+    pub fn ask_positive(&self) -> usize {
+        let mut number: usize = 0;
         let mut is_valid = false;
 
         while !is_valid {
-            match u64::try_from(self.ask_number()) {
+            match usize::try_from(self.ask_number()) {
                 Ok(result) => {
                     number = result;
                     is_valid = true;
