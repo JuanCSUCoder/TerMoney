@@ -1,12 +1,8 @@
-mod money;
-
 use chrono::{DateTime, Utc};
 use prettytable::Table;
 use serde::{Deserialize, Serialize};
 
 use crate::floating_decimal::FloatingPointDecimal;
-
-use self::money::Money;
 
 #[derive(Serialize, Deserialize)]
 /// A transaction
