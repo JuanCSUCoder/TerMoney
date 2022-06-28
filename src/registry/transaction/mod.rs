@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::floating_decimal::FloatingPointDecimal;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 /// A transaction
 pub struct Transaction {
     id: u64,
