@@ -48,6 +48,11 @@ impl Transaction {
         self.id
     }
 
+		/// Returns the ID of the assosiated promise transaction
+		pub fn get_continue(&self) -> Option<u64> {
+			self.continues
+		}
+
     /// Returns the from attribute
     pub fn get_from(&self) -> String {
         self.from.clone()
@@ -57,6 +62,11 @@ impl Transaction {
     pub fn get_to(&self) -> String {
         self.to.clone()
     }
+
+		/// Returns the amount of the transaction
+		pub fn get_money(&self) -> FloatingPointDecimal {
+			self.money
+		}
 
     /// Prints the transaction in a table row
     pub fn print_row(&self, table: &mut Table) {

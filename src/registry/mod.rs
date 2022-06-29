@@ -8,7 +8,7 @@ use std::{
 use prettytable::Table;
 
 use self::transaction::Transaction;
-use crate::question::Question;
+use crate::{question::Question, floating_decimal::FloatingPointDecimal};
 
 /// A transaction registry
 pub struct Registry {
@@ -282,6 +282,45 @@ impl Registry {
         table.printstd();
         println!("")
     }
+
+		/// Returns a copy of the requested transaction
+		pub fn getTransaction(&self, transaction_id: u64) -> Result<Transaction, &str> {
+			let mut result = Err("Transaction ID Not Found");
+
+			for transaction in &self.transactions {
+				if transaction.get_id()==transaction_id {
+					result = Ok(transaction.clone());
+					break;
+				}
+			}
+
+			result
+		}
+
+		/// Returns the amount remaining to fully pay a promise
+		pub fn calculate_promise_remaining_amount(&self, promise_id: u64) -> Result<FloatingPointDecimal, &str> {
+			match self.getTransaction(promise_id) {
+				Ok(promise) => {
+					let remaining_amount = promise.get_money();
+
+					// For each continuation transaction, substracts its value
+					for transaction in &self.transactions {
+						match transaction.get_continue() {
+							Some(cont_id) => {
+								if promise.get_id()==cont_id {
+									// Substract
+									todo!("Substract FloatingPointDecimals not implemented")
+								}
+							},
+							None => ()
+						}
+					}
+
+					Ok(remaining_amount)
+				},
+				Err(error) => Err(error)
+			}
+		}
 
     /// Generates a new ID an updates the ID count
     fn generate_id(&mut self) -> u64 {
