@@ -301,7 +301,7 @@ impl Registry {
 		pub fn calculate_promise_remaining_amount(&self, promise_id: u64) -> Result<FloatingPointDecimal, &str> {
 			match self.getTransaction(promise_id) {
 				Ok(promise) => {
-					let remaining_amount = promise.get_money();
+					let mut remaining_amount = promise.get_money();
 
 					// For each continuation transaction, substracts its value
 					for transaction in &self.transactions {
@@ -309,7 +309,7 @@ impl Registry {
 							Some(cont_id) => {
 								if promise.get_id()==cont_id {
 									// Substract
-									todo!("Substract FloatingPointDecimals not implemented")
+									remaining_amount = remaining_amount-transaction.get_money();
 								}
 							},
 							None => ()
