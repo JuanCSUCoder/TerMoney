@@ -2,6 +2,10 @@ use std::{fmt::Display, ops::Sub, cmp::min};
 
 use serde::{Serialize, Deserialize};
 
+trait CommonExp {
+	fn get_commons(&self, b: &Self) -> (Self, Self) where Self: Sized;
+}
+
 #[derive(Serialize, Deserialize, Copy, Clone)]
 /// A floating point high presicion decimal number
 pub struct FloatingPointDecimal {
@@ -66,21 +70,49 @@ impl Display for FloatingPointDecimal {
     }
 }
 
+impl CommonExp for FloatingPointDecimal {
+	fn get_commons(&self, b: &Self) -> (Self, Self) where Self: Sized {
+		// Find common exponent
+		let common: i8 = min(self.exponent, b.exponent);
+
+		// Convert numbers to the same exponent
+		let mut a = self.clone();
+		let mut b = b.clone();
+
+		a.change_exponent(common).expect("Fatal Error: Exponent Conversion Couldn't be Performed");
+		b.change_exponent(common).expect("Fatal Error: Exponent Conversion Couldn't be Performed");
+
+		(a, b)
+	}
+}
+
 impl Sub<FloatingPointDecimal> for FloatingPointDecimal {
     type Output = FloatingPointDecimal;
 
     fn sub(self, rhs: FloatingPointDecimal) -> Self::Output {
       // Find common exponent
-			let common: i8 = min(self.exponent, rhs.exponent);
-
-			// Convert numbers to the same exponent
-			let mut a = self;
-			let mut b = rhs;
-
-			a.change_exponent(common).expect("Fatal Error: Exponent Conversion Couldn't be Performed");
-			b.change_exponent(common).expect("Fatal Error: Exponent Conversion Couldn't be Performed");
+			let (a, b) = self.get_commons(&rhs);
 
 			// Operate amount & Return Result
-			FloatingPointDecimal::new(a.integer-b.integer, common)
+			FloatingPointDecimal::new(a.integer-b.integer, a.exponent)
     }
+}
+
+impl PartialEq for FloatingPointDecimal {
+	fn eq(&self, other: &Self) -> bool {
+		// Find common exponent
+		let (a, b) = self.get_commons(other);
+
+		// Compare
+		a.integer == a.integer
+	}
+}
+
+impl PartialOrd for FloatingPointDecimal {
+	fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+		// Find common exponent
+		let (a, b) = self.get_commons(other);
+
+		a.integer.partial_cmp(&b.integer)
+	}
 }

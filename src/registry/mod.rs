@@ -239,8 +239,9 @@ impl Registry {
 		/// Adds a promise payment transaction promting the user through the CLI
 		pub fn add_payment_cli(&mut self) {
 			// Select the promise to pay
-			let cont_id: u64;
+			let cont_id: u64 = 0;
 			loop {
+				todo!("Code user input");
 				break;
 			}
 
@@ -254,6 +255,9 @@ impl Registry {
             .ask_floating_decimal();
 				
 				// Check if its less or equal to the remaining amount
+				if amount <= self.calculate_promise_remaining_amount(cont_id).expect("Expected an existing ID") {
+					break;
+				}
 			}
 
 			// Save the transaction
