@@ -312,7 +312,7 @@ impl Registry {
 			println!("ACCOUNT INFORMATION - {}", account);
 
 			let mut table = Table::new();
-			table.set_titles(row![bc => "ID", "DATE", "DESCRIPTION", "TYPE", "AMOUNT"]);
+			table.set_titles(row![bc => "ID", "DATE", "DESCRIPTION", "TYPE", "FROM/TO", "AMOUNT"]);
 			
 			for transaction in &self.transactions {
 				transaction.print_row_perspective(&mut table, &account);
