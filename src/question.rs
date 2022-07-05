@@ -105,6 +105,19 @@ impl Question {
 			let base = self.message.clone();
 			
 			self.message = format!("{} (Integer Part): ", base);
+			let integer = self.ask_numeric_type();
+
+			self.message = format!("{} (Exponent): ", base);
+			let exponent = self.ask_numeric_type();
+
+			FloatingPointDecimal::new(integer, exponent)
+		}
+
+		/// Asks the configured question and returns a FloatingPointDecimal
+		pub fn ask_floating_decimal_positive(&mut self) -> FloatingPointDecimal {
+			let base = self.message.clone();
+			
+			self.message = format!("{} (Integer Part): ", base);
 			let integer;
 			loop {
 				match self.ask_positive().try_into() {

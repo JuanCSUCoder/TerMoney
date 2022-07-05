@@ -136,7 +136,7 @@ impl Registry {
             .not_containing(".")
             .not_containing(",")
             .not_containing("$")
-            .ask_floating_decimal();
+            .ask_floating_decimal_positive();
 
         println!("${} will be sent from {} to {}.", amount, from, to);
 
@@ -217,7 +217,7 @@ impl Registry {
             .not_containing(".")
             .not_containing(",")
             .not_containing("$")
-            .ask_floating_decimal();
+            .ask_floating_decimal_positive();
 
         println!("${} will be sent from {} to {}.", amount, from, to);
 
@@ -264,7 +264,7 @@ impl Registry {
             .not_containing(".")
             .not_containing(",")
             .not_containing("$")
-            .ask_floating_decimal();
+            .ask_floating_decimal_positive();
 				
 				// Check if its less or equal to the remaining amount
 				if amount <= self.calculate_promise_remaining_amount(cont_id).expect("Expected an existing ID") {
