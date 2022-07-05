@@ -29,6 +29,7 @@ impl Question {
         self
     }
 
+		#[allow(dead_code)]
     /// Adds an invalid answer
     pub fn not_valid(mut self, value: &str) -> Self {
         self.invalids.push(value.to_string());
@@ -100,6 +101,7 @@ impl Question {
         number
     }
 
+		#[allow(dead_code)]
 		/// Asks the configured question and returns a FloatingPointDecimal
 		pub fn ask_floating_decimal(&mut self) -> FloatingPointDecimal {
 			let base = self.message.clone();

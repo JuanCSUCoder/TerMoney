@@ -26,6 +26,7 @@ impl Menu {
 		self
 	}
 
+	#[allow(dead_code)]
 	/// Prevents the menu from generating an exit option
 	pub fn not_exit(&mut self) {
 		self.exit = false;

@@ -72,26 +72,31 @@ impl AccountStatus {
 		println!();
 	}
 
+	#[allow(dead_code)]
 	/// Returns the balance
 	pub fn get_balance(&self) -> FloatingPointDecimal {
 		self.balance
 	}
 
+	#[allow(dead_code)]
 	/// Returns the ingress
 	pub fn get_ingress(&self) -> FloatingPointDecimal {
 		self.ingress
 	}
 
+	#[allow(dead_code)]
 	/// Returns the egress
 	pub fn get_egress(&self) -> FloatingPointDecimal {
 		self.egress
 	}
 
+	#[allow(dead_code)]
 	/// Returns the debt
 	pub fn get_debt(&self) -> FloatingPointDecimal {
 		self.debt
 	}
 
+	#[allow(dead_code)]
 	/// Returns the pending_pay
 	pub fn get_pending_pay(&self) -> FloatingPointDecimal {
 		self.pending_pay
