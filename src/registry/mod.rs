@@ -309,6 +309,7 @@ impl Registry {
 
 		/// Displays all the account information in console
 		pub fn show_account(&self, account: &String) {
+			println!();
 			println!("ACCOUNT INFORMATION - {}", account);
 
 			let mut table = Table::new();
@@ -320,6 +321,26 @@ impl Registry {
 
 			table.printstd();
 			println!();
+		}
+
+		/// Shows the selected account information
+		pub fn show_account_cli(&self) {
+			let mut account;
+
+			loop {
+				account = Question::new("Account: ")
+					.not_containing(" ")
+					.not_null()
+					.ask();
+
+				if self.account_exists(&account) {
+					break;
+				} else {
+					println!("Account doesn't exist. Please select an existing account");
+				}
+			}
+
+			self.show_account(&account);
 		}
 
 		/// Returns a copy of the requested transaction

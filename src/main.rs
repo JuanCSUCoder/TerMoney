@@ -46,7 +46,7 @@ fn main() {
 			1 => loop {
 				match query_menu.display() {
 					1 => reg.show_transactions(),
-					2 => println!("Unimplemented"),
+					2 => reg.show_account_cli(),
 					0 => break,
 					_ => panic!("Unexpected")
 				}
