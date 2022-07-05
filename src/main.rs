@@ -14,8 +14,8 @@ use registry::Registry;
 
 fn main() {
 	const NAME: &str = "TerMoney";
-	const VERSION: &str = "v0.2.2";
-	const BRANCH: &str = "development";
+	const VERSION: &str = "v0.2.3";
+	const BRANCH: &str = "stable";
 
 	// Load Registry
 	println!("{} {} - {}", NAME, VERSION, BRANCH);
