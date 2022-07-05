@@ -418,6 +418,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "termoney"
+version = "0.2.1"
+dependencies = [
+ "chrono",
+ "prettytable-rs",
+ "serde",
+ "serde_json",
+ "term 0.7.0",
+]
+
+[[package]]
 name = "thiserror"
 version = "1.0.31"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -459,17 +470,6 @@ name = "unicode-width"
 version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3ed742d4ea2bd1176e236172c8429aaf54486e7ac098db29ffe6529e0ce50973"
-
-[[package]]
-name = "walletmanager"
-version = "0.2.1"
-dependencies = [
- "chrono",
- "prettytable-rs",
- "serde",
- "serde_json",
- "term 0.7.0",
-]
 
 [[package]]
 name = "wasi"

@@ -1,7 +1,12 @@
 [package]
-name = "walletmanager"
+name = "termoney"
 version = "0.2.1"
 edition = "2021"
+license="MIT"
+license-file="LICENSE"
+homepage="https://github.com/JuanCSUCoder/TerMoney"
+repository="https://github.com/JuanCSUCoder/TerMoney"
+readme="README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
