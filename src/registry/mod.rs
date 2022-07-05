@@ -323,7 +323,7 @@ impl Registry {
 		/// Checks if the specified transaction ID is a promise
 		pub fn is_a_promise(&self, transaction_id: u64) -> Result<bool, &str> {
 			match self.get_transaction(transaction_id) {
-				Ok(tr) => Ok(tr.get_continue()!=None),
+				Ok(tr) => Ok(tr.get_continue()==None),
 				Err(txt) => Err(txt)
 			}
 		}
