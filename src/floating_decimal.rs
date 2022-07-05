@@ -53,7 +53,10 @@ impl Display for FloatingPointDecimal {
 				let integer_size = (printable.len() as i64)+(self.exponent as i64);
 
 				if integer_size>0 {
-					
+					let print_int: String = printable.chars().take(integer_size as usize).collect();
+					let print_dec: String = printable.chars().skip(integer_size as usize).take(-self.exponent as usize).collect();
+
+					printable = format!("{},{}", print_int, print_dec);
 				} else {
 					let mut zeros = String::new();
 					let limit = -integer_size;
