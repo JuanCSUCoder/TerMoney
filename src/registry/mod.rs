@@ -308,7 +308,7 @@ impl Registry {
     }
 
 		/// Displays all the account information in console
-		pub fn show_account(&self, account: String) {
+		pub fn show_account(&self, account: &String) {
 			println!("ACCOUNT INFORMATION - {}", account);
 
 			let mut table = Table::new();
@@ -348,6 +348,17 @@ impl Registry {
 		pub fn transaction_exists(&self, transaction_id: u64) -> bool {
 			for transaction in &self.transactions {
 				if transaction.get_id()==transaction_id {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		/// Checks if the specified account exists in the registry
+		pub fn account_exists(&self, account: &String) -> bool {
+			for acc in &self.accounts {
+				if account==acc {
 					return true;
 				}
 			}
