@@ -328,22 +328,26 @@ impl Registry {
 
 		/// Shows the selected account information
 		pub fn show_account_cli(&self) {
-			let mut account;
+			if self.transactions.len()!=0 {
+				let mut account;
 
-			loop {
-				account = Question::new("Account: ")
-					.not_containing(" ")
-					.not_null()
-					.ask();
+				loop {
+					account = Question::new("Account: ")
+						.not_containing(" ")
+						.not_null()
+						.ask();
 
-				if self.account_exists(&account) {
-					break;
-				} else {
-					println!("Account doesn't exist. Please select an existing account");
+					if self.account_exists(&account) {
+						break;
+					} else {
+						println!("Account doesn't exist. Please select an existing account");
+					}
 				}
-			}
 
-			self.show_account(&account);
+				self.show_account(&account);
+			} else {
+				println!("There are no accounts to show")
+			}
 		}
 
 		/// Returns a copy of the requested transaction
