@@ -95,4 +95,37 @@ impl Transaction {
 
         table.add_row(row![FB -> self.id, self.time.format("%a %b %e/%y"), desc, self.from, self.to, kind, r -> self.money]);
     }
-}
+
+		/// Prints the transaction in a table row from an account perspective
+		pub fn print_row_perspective(&self, table: &mut Table, account: &String) {
+			// Prepare printables
+			let kind = match self.continues {
+				None => "Promise".to_string(),
+				Some(cod) => format!("Pay-{}", cod),
+			};
+
+			let desc = match &self.description {
+				Some(val) => val.clone(),
+				None => "  -  ".to_string(),
+			};
+
+			let desc = desc
+				.chars()
+				.collect::<Vec<char>>()
+				.chunks(33)
+				.map(|c| c.iter().collect::<String>())
+				.collect::<Vec<String>>()
+				.join("\n");
+
+			// Ingress
+			if account==&self.to {
+				table.add_row(row![FB -> self.id, self.time.format("%a %b %e/%y"), desc, kind, self.from, g -> self.money]);
+			}
+			
+			// Egress
+			if account==&self.from {
+				table.add_row(row![FB -> self.id, self.time.format("%a %b %e/%y"), desc, kind, self.to, r -> format!("-{}", self.money)]);
+			}
+		}
+
+	}
