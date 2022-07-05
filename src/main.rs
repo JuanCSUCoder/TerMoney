@@ -14,7 +14,7 @@ use registry::Registry;
 
 fn main() {
 	const NAME: &str = "TerMoney";
-	const VERSION: &str = "v0.2.1";
+	const VERSION: &str = "v0.2.2";
 	const BRANCH: &str = "development";
 
 	// Load Registry

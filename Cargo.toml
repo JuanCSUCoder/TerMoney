@@ -1,6 +1,6 @@
 [package]
 name = "termoney"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2021"
 license="MIT"
 description="It's a command-line application intended to help recording and managing simple financial records for personal use."
