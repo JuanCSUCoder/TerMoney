@@ -2,6 +2,8 @@ use std::{fmt::Display, ops::{Sub, Add, AddAssign, SubAssign}, cmp::min};
 
 use serde::{Serialize, Deserialize};
 
+use crate::utils::{Utils};
+
 trait CommonExp {
 	fn get_commons(&self, b: &Self) -> (Self, Self) where Self: Sized;
 }
@@ -49,11 +51,15 @@ impl Display for FloatingPointDecimal {
 				for _ in 0..self.exponent {
 					printable.push('0');
 				}
+
+				printable = Utils::add_thousand_separator(&printable);
 			} else {
 				let integer_size = (printable.len() as i64)+(self.exponent as i64);
 
 				if integer_size>0 {
 					let print_int: String = printable.chars().take(integer_size as usize).collect();
+					let print_int = Utils::add_thousand_separator(&print_int);
+
 					let print_dec: String = printable.chars().skip(integer_size as usize).take(-self.exponent as usize).collect();
 
 					printable = format!("{},{}", print_int, print_dec);
