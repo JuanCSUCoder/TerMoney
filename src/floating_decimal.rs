@@ -1,4 +1,4 @@
-use std::{fmt::Display, ops::Sub, cmp::min};
+use std::{fmt::Display, ops::{Sub, Add, AddAssign, SubAssign}, cmp::min};
 
 use serde::{Serialize, Deserialize};
 
@@ -86,6 +86,27 @@ impl CommonExp for FloatingPointDecimal {
 	}
 }
 
+impl Add<FloatingPointDecimal> for FloatingPointDecimal {
+	type Output = FloatingPointDecimal;
+
+	fn add(self, rhs: FloatingPointDecimal) -> Self::Output {
+		// Find common exponent
+		let (a, b) = self.get_commons(&rhs);
+
+		// Operate amount & Return Result
+		FloatingPointDecimal::new(a.integer+b.integer, a.exponent)
+	}
+}
+
+impl AddAssign<FloatingPointDecimal> for FloatingPointDecimal {
+	fn add_assign(&mut self, rhs: FloatingPointDecimal) {
+		let new_val = self.add(rhs);
+
+		self.integer = new_val.integer;
+		self.exponent = new_val.exponent;
+	}
+}
+
 impl Sub<FloatingPointDecimal> for FloatingPointDecimal {
     type Output = FloatingPointDecimal;
 
@@ -96,6 +117,15 @@ impl Sub<FloatingPointDecimal> for FloatingPointDecimal {
 			// Operate amount & Return Result
 			FloatingPointDecimal::new(a.integer-b.integer, a.exponent)
     }
+}
+
+impl SubAssign<FloatingPointDecimal> for FloatingPointDecimal {
+	fn sub_assign(&mut self, rhs: FloatingPointDecimal) {
+		let new_val = self.sub(rhs);
+
+		self.integer = new_val.integer;
+		self.exponent = new_val.exponent;
+	}
 }
 
 impl PartialEq for FloatingPointDecimal {
