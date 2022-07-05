@@ -1,5 +1,3 @@
-mod transaction;
-
 use std::{
     fs::File,
     io::{Read, Write},
@@ -7,8 +5,7 @@ use std::{
 
 use prettytable::Table;
 
-use self::transaction::Transaction;
-use crate::{question::Question, floating_decimal::FloatingPointDecimal};
+use crate::{transaction::Transaction, question::Question, floating_decimal::FloatingPointDecimal, account::AccountStatus};
 
 /// A transaction registry
 pub struct Registry {
@@ -312,12 +309,23 @@ impl Registry {
 			println!();
 			println!("ACCOUNT INFORMATION - {}", account);
 
+			let acc_status = AccountStatus::new();
+
 			let mut table = Table::new();
 			table.set_titles(row![bc => "ID", "DATE", "DESCRIPTION", "TYPE", "FROM/TO", "AMOUNT"]);
 			
 			for transaction in &self.transactions {
 				transaction.print_row_perspective(&mut table, &account);
 			}
+
+			println!("BALANCE: {}", acc_status.get_balance());
+			println!();
+			println!("INGRESS: {}", acc_status.get_ingress());
+			println!("EGRESS: {}", acc_status.get_egress());
+			println!();
+			println!("DEBT: {}", acc_status.get_debt());
+			println!("PENDING PAYMENT: {}", acc_status.get_pending_pay());
+			println!();
 
 			table.printstd();
 			println!();
