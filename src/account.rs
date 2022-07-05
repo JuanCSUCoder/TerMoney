@@ -36,12 +36,16 @@ impl AccountStatus {
 			if transaction.get_to()==self.account {
 				self.ingress += amount;
 				self.balance += amount;
+
+				self.pending_pay -= amount;
 			}
 
 			// Egress
 			if transaction.get_from()==self.account {
 				self.egress += amount;
 				self.balance -= amount;
+
+				self.debt -= amount;
 			}
 		} else {
 			// Pending Payment
