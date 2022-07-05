@@ -309,23 +309,18 @@ impl Registry {
 			println!();
 			println!("ACCOUNT INFORMATION - {}", account);
 
-			let acc_status = AccountStatus::new();
+			let mut acc_status = AccountStatus::new(account);
 
 			let mut table = Table::new();
 			table.set_titles(row![bc => "ID", "DATE", "DESCRIPTION", "TYPE", "FROM/TO", "AMOUNT"]);
 			
 			for transaction in &self.transactions {
 				transaction.print_row_perspective(&mut table, &account);
+
+				acc_status.update(transaction);
 			}
 
-			println!("BALANCE: {}", acc_status.get_balance());
-			println!();
-			println!("INGRESS: {}", acc_status.get_ingress());
-			println!("EGRESS: {}", acc_status.get_egress());
-			println!();
-			println!("DEBT: {}", acc_status.get_debt());
-			println!("PENDING PAYMENT: {}", acc_status.get_pending_pay());
-			println!();
+			acc_status.show_acc_status();
 
 			table.printstd();
 			println!();
@@ -368,7 +363,7 @@ impl Registry {
 		/// Checks if the specified transaction ID is a promise
 		pub fn is_a_promise(&self, transaction_id: u64) -> Result<bool, &str> {
 			match self.get_transaction(transaction_id) {
-				Ok(tr) => Ok(tr.get_continue()==None),
+				Ok(tr) => Ok(tr.is_a_promise()),
 				Err(txt) => Err(txt)
 			}
 		}
