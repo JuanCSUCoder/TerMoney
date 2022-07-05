@@ -14,7 +14,7 @@ use registry::Registry;
 
 fn main() {
 	const NAME: &str = "OpenMoney";
-	const VERSION: &str = "v0.1";
+	const VERSION: &str = "v0.2.0";
 	const BRANCH: &str = "development";
 
 	// Load Registry
