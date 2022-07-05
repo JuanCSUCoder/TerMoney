@@ -5,6 +5,8 @@ mod registry;
 mod menu;
 mod utils;
 mod floating_decimal;
+mod account;
+mod transaction;
 
 use menu::Menu;
 use question::Question;

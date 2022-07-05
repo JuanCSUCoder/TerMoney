@@ -105,7 +105,16 @@ impl Question {
 			let base = self.message.clone();
 			
 			self.message = format!("{} (Integer Part): ", base);
-			let integer = self.ask_positive();
+			let integer;
+			loop {
+				match self.ask_positive().try_into() {
+					Ok(val) => {
+						integer = val;
+						break;
+					},
+					Err(_) => println!("The number is too big. Please enter a smaller number")
+				}
+			}
 
 			self.message = format!("{} (Exponent): ", base);
 			let exponent = self.ask_numeric_type();

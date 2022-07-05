@@ -9,13 +9,13 @@ trait CommonExp {
 #[derive(Serialize, Deserialize, Copy, Clone)]
 /// A floating point high presicion decimal number
 pub struct FloatingPointDecimal {
-	integer: usize,
+	integer: isize,
 	exponent: i8
 }
 
 impl FloatingPointDecimal {
 	/// Creates a floating point decimal number
-	pub fn new(integer: usize, exponent: i8) -> Self {
+	pub fn new(integer: isize, exponent: i8) -> Self {
 		
 		Self {
 			integer,
@@ -26,7 +26,7 @@ impl FloatingPointDecimal {
 	/// Recalculates the number for another exponent
 	pub fn change_exponent(&mut self, new_exponent: i8) -> Result<(), &str> {
 		let exp_diff = self.exponent-new_exponent;
-		const BASE: usize = 10;
+		const BASE: isize = 10;
 
 		if exp_diff>=0 {
 			self.integer = self.integer*BASE.pow(exp_diff as u32);

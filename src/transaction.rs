@@ -73,6 +73,11 @@ impl Transaction {
 			self.description.clone()
 		}
 
+		/// Returns if the transaction is a promise or not
+		pub fn is_a_promise(&self) -> bool {
+			self.continues==None
+		}
+
     /// Prints the transaction in a table row
     pub fn print_row(&self, table: &mut Table) {
         let kind = match self.continues {
