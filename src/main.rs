@@ -11,8 +11,12 @@ use question::Question;
 use registry::Registry;
 
 fn main() {
+	const NAME: &str = "OpenMoney";
+	const VERSION: &str = "v0.1";
+	const BRANCH: &str = "development";
+
 	// Load Registry
-	println!("Transaction Managment and Registry System");
+	println!("{} {} - {}", NAME, VERSION, BRANCH);
 	println!("-----------------------------------------");
 	println!("Please select a file to load");
 	println!();
@@ -30,7 +34,7 @@ fn main() {
 	}
 
 	// Configure Menus
-	let main_menu = Menu::new("Transaction Managment and Registry System")
+	let main_menu = Menu::new(NAME)
     .add_option("Query Transactions and Accounts")
     .add_option("Insert Transaction");
 	let query_menu = Menu::new("Transactions Query Menu")

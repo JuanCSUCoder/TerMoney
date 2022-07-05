@@ -1,4 +1,4 @@
-# Transaction Managment and Registry System
+# OpenMoney
 
 It's a command-line application intended to help recording and managing simple financial records for personal use.
 
