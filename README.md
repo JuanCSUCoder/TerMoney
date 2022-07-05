@@ -1,4 +1,4 @@
-# OpenMoney
+# TerMoney
 
 It's a command-line application intended to help recording and managing simple financial records for personal use.
 
