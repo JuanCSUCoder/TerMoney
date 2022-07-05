@@ -239,15 +239,30 @@ impl Registry {
 		/// Adds a promise payment transaction promting the user through the CLI
 		pub fn add_payment_cli(&mut self) {
 			// Select the promise to pay
-			let cont_id: u64 = 0;
+			let mut cont_id;
 			loop {
-				todo!("Code user input");
-				break;
+				cont_id = Question::new("Promise ID: ")
+        .not_null()
+        .not_containing(".")
+        .not_containing(",")
+        .not_containing("$")
+        .ask_numeric_type();
+				
+				if self.transaction_exists(cont_id) {
+					if self.is_a_promise(cont_id).unwrap() {
+						break;
+					} else {
+						println!("Selected transaction is not a promise. Please insert a valid ID.");
+					}
+				} else {
+					print!("The ID doesn't match any record. Please insert a valid ID.");
+				}
 			}
 
 			// Ask a valid (lower or equal to the remaining amount) amount
+			let mut amount;
 			loop {
-				let amount = Question::new("Digits: ")
+				amount = Question::new("Digits: ")
             .not_null()
             .not_containing(".")
             .not_containing(",")
@@ -261,6 +276,10 @@ impl Registry {
 			}
 
 			// Save the transaction
+			let promise_transaction = self.get_transaction(cont_id).unwrap();
+
+			let payment = Transaction::new(self.generate_id(), Some(cont_id), promise_transaction.get_from(), promise_transaction.get_to(), amount, promise_transaction.get_desc());
+			self.transactions.push(payment);
 		}
 
     /// Saves the current state to the registry file
@@ -288,7 +307,7 @@ impl Registry {
     }
 
 		/// Returns a copy of the requested transaction
-		pub fn getTransaction(&self, transaction_id: u64) -> Result<Transaction, &str> {
+		pub fn get_transaction(&self, transaction_id: u64) -> Result<Transaction, &str> {
 			let mut result = Err("Transaction ID Not Found");
 
 			for transaction in &self.transactions {
@@ -301,9 +320,28 @@ impl Registry {
 			result
 		}
 
+		/// Checks if the specified transaction ID is a promise
+		pub fn is_a_promise(&self, transaction_id: u64) -> Result<bool, &str> {
+			match self.get_transaction(transaction_id) {
+				Ok(tr) => Ok(tr.get_continue()!=None),
+				Err(txt) => Err(txt)
+			}
+		}
+
+		/// Checks if the specified transaction ID exists in the registry
+		pub fn transaction_exists(&self, transaction_id: u64) -> bool {
+			for transaction in &self.transactions {
+				if transaction.get_id()==transaction_id {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
 		/// Returns the amount remaining to fully pay a promise
 		pub fn calculate_promise_remaining_amount(&self, promise_id: u64) -> Result<FloatingPointDecimal, &str> {
-			match self.getTransaction(promise_id) {
+			match self.get_transaction(promise_id) {
 				Ok(promise) => {
 					let mut remaining_amount = promise.get_money();
 

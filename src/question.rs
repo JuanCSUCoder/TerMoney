@@ -1,7 +1,6 @@
 use std::{
-    any::type_name,
-    io::{stdin, stdout, Write},
-    u64,
+	any::type_name,
+	io::{stdin, stdout, Write}
 };
 
 use crate::floating_decimal::FloatingPointDecimal;

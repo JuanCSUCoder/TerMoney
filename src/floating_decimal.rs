@@ -26,10 +26,10 @@ impl FloatingPointDecimal {
 	/// Recalculates the number for another exponent
 	pub fn change_exponent(&mut self, new_exponent: i8) -> Result<(), &str> {
 		let exp_diff = self.exponent-new_exponent;
-		const base: usize = 10;
+		const BASE: usize = 10;
 
 		if exp_diff>=0 {
-			self.integer = self.integer*base.pow(exp_diff as u32);
+			self.integer = self.integer*BASE.pow(exp_diff as u32);
 			self.exponent = new_exponent;
 
 			Ok(())
@@ -104,7 +104,7 @@ impl PartialEq for FloatingPointDecimal {
 		let (a, b) = self.get_commons(other);
 
 		// Compare
-		a.integer == a.integer
+		a.integer == b.integer
 	}
 }
 

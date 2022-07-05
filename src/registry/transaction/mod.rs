@@ -68,6 +68,11 @@ impl Transaction {
 			self.money
 		}
 
+		/// Returns the description of the transaction
+		pub fn get_desc(&self) -> Option<String> {
+			self.description.clone()
+		}
+
     /// Prints the transaction in a table row
     pub fn print_row(&self, table: &mut Table) {
         let kind = match self.continues {
