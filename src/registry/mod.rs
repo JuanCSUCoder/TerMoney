@@ -293,18 +293,34 @@ impl Registry {
 
     /// Displays all the transactions in console
     pub fn show_transactions(&self) {
-        println!("FULL TRANSACTION REGISTRY");
+			println!();
+			println!("FULL TRANSACTION REGISTRY");
 
-        let mut table = Table::new();
-        table.set_titles(row![bc => "ID", "DATE", "DESCRIPTION", "FROM", "TO", "TYPE", "AMOUNT"]);
+			let mut table = Table::new();
+			table.set_titles(row![bc => "ID", "DATE", "DESCRIPTION", "FROM", "TO", "TYPE", "AMOUNT"]);
 
-        for transaction in &self.transactions {
-            transaction.print_row(&mut table);
-        }
+			for transaction in &self.transactions {
+					transaction.print_row(&mut table);
+			}
 
-        table.printstd();
-        println!("")
+			table.printstd();
+			println!("")
     }
+
+		/// Displays all the account information in console
+		pub fn show_account(&self, account: String) {
+			println!("ACCOUNT INFORMATION - {}", account);
+
+			let mut table = Table::new();
+			table.set_titles(row![bc => "ID", "DATE", "DESCRIPTION", "TYPE", "AMOUNT"]);
+			
+			for transaction in &self.transactions {
+				transaction.print_row_perspective(&mut table, &account);
+			}
+
+			table.printstd();
+			println!();
+		}
 
 		/// Returns a copy of the requested transaction
 		pub fn get_transaction(&self, transaction_id: u64) -> Result<Transaction, &str> {
